@@ -1,0 +1,58 @@
+name:                aoc2023
+version:             0.1.0.0
+github:              "lunky/aoc2023"
+license:             BSD3
+author:              "Quinn Wilson"
+maintainer:          "Quinn.Wilson@midworld.org"
+copyright:           "Quinn Wilson"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            ¯\_(ツ)_/¯
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/lunky/aoc2023#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
+  when:
+  - condition: false
+    other-modules: Paths_kata  
+  dependencies:
+    - split
+    - parsec
+    - containers
+
+executables:
+  aoc2023-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - aoc2023
+
+tests:
+  aoc2023-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hspec
+    - hspec-discover
+    - QuickCheck
+    - aoc2023
