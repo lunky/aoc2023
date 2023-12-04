@@ -14,25 +14,15 @@ day4 input = sum $ map (score . snd) (parseInput input)
 
 day4b :: String -> Int
 day4b input = sum $ map snd $ Map.toList $ day4b' input
-
-day4b' input = foldl' inc init boardState
-  where boardState = parseInput input
-        init = Map.fromList $ map (\y-> (fst y,1)) boardState
-        inc acc (g,w) = foldr (\y m -> Map.insertWith (+) y (m Map.! g) m ) acc [(g+1)..(g+w)]
+  where 
+    day4b' input = foldl' inc init boardState
+      where boardState = parseInput input
+            init = Map.fromList $ map (\y-> (fst y,1)) boardState
+            inc acc (g,w) = foldr (\y m -> Map.insertWith (+) y (m Map.! g) m ) acc [(g+1)..(g+w)]
 
 score :: Int -> Int
 score 0 = 0
-score 1 = 1
-score 2 = 2
-score 3 = 4
-score 4 = 8
-score 5 = 16
-score 6 = 32
-score 7 = 64
-score 8 = 128
-score 9 = 256
-score 10 = 512
-score x = error  $ "error not expecting " ++ show x
+score n = 2 ^ (n-1)
 
 parseInput input = map parseCard $ lines input
 
