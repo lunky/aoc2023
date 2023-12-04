@@ -26,7 +26,7 @@ library:
   source-dirs: src
   when:
   - condition: false
-    other-modules: Paths_kata  
+    other-modules: Paths_aoc2023
   dependencies:
     - split
     - parsec
@@ -37,7 +37,7 @@ executables:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
-    - -threaded
+#    - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:

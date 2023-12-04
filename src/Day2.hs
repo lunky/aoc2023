@@ -6,23 +6,20 @@ module Day2
     )
     where
 import Data.List.Split
-import Data.Map (Map)
 import qualified Data.Map as Map
-
-data Game = Game Int Int Int Int
 
 day2 :: String -> Int
 day2 input = sum $ map fst $ filter (\(game,gameMap) -> gameMap Map.! "red" <= 12 && gameMap Map.! "green" <= 13 && gameMap Map.! "blue" <= 14) games
   where games = collapseGames input
 
 day2b :: String -> Int
-day2b input = sum $ map snd $ map (\(game, m)-> (game, (m Map.! "red") * (m Map.! "green") * (m Map.! "blue"))) $ collapseGames input
+day2b input = sum $ map (snd . (\(game, m)-> (game, (m Map.! "red") * (m Map.! "green") * (m Map.! "blue")))) (collapseGames input)
 
 parseInput input =  map parseLine $ lines input
 
-collapseGames input = map (\y-> collapseGame y Map.empty) $ parseInput input
+collapseGames input = map (`collapseGame` Map.empty) $ parseInput input
 collapseGame (game, turns) m = (game,
-    foldr (\(k,v) acc -> Map.insertWith (\a b -> if a > b then a else b) k v acc) m $ concat turns
+    foldr (\(k,v) acc -> Map.insertWith max k v acc) m $ concat turns
   )
 
 

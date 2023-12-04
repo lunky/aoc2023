@@ -53,25 +53,6 @@ parseNum = do
     ANum d -> return d
     AChar _ -> parseNum
 
-parseWordNum :: Parser Int
-parseWordNum = do
-    let numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-    num <- Parsec.choice $ map Parsec.string $ numbers  ++ map reverse numbers
-    case num of 
-      "one" -> return 1
-      "eno" -> return 1
-      "two" -> return 2
-      "owt" -> return 2
-      "three" -> return 3
-      "four" -> return 4
-      "ruof" -> return 4
-      "five" -> return 5
-      "six" -> return 6
-      "seven" -> return 7
-      "eight" -> return 8
-      "nine" -> return 9
-      _ -> return 0
-
 parseOne :: Parser Int
 parseOne = do
   num <- Parsec.string "one" <|> Parsec.string "eno"
