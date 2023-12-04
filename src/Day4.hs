@@ -15,10 +15,12 @@ day4 input = sum $ map (score . snd) (parseInput input)
 day4b :: String -> Int
 day4b input = sum $ map snd $ Map.toList $ day4b' input
   where 
-    day4b' input = foldl' inc init boardState
+    day4b' input = foldl' award initialized boardState
       where boardState = parseInput input
-            init = Map.fromList $ map (\y-> (fst y,1)) boardState
-            inc acc (g,w) = foldr (\y m -> Map.insertWith (+) y (m Map.! g) m ) acc [(g+1)..(g+w)]
+            initialized = Map.fromList $ map (\y-> (fst y,1)) boardState
+            award acc (game,wins) = foldr (\y m -> 
+                                     Map.insertWith (+) y (m Map.! game) m ) 
+                                     acc [(game+1)..(game+wins)]
 
 score :: Int -> Int
 score 0 = 0

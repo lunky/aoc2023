@@ -29,6 +29,7 @@ library
       Day2
       Day3
       Day4
+      Day5
       Lib
   hs-source-dirs:
       src
@@ -59,6 +60,7 @@ test-suite aoc2023-test
       Day2Spec
       Day3Spec
       Day4Spec
+      Day5Spec
       LibSpec
       Paths_aoc2023
   hs-source-dirs:
