@@ -27,6 +27,8 @@ library
   exposed-modules:
       Day1
       Day2
+      Day3
+      Day4
       Lib
   other-modules:
       Paths_aoc2023
@@ -57,6 +59,8 @@ test-suite aoc2023-test
   other-modules:
       Day1Spec
       Day2Spec
+      Day3Spec
+      Day4Spec
       LibSpec
       Paths_aoc2023
   hs-source-dirs:
