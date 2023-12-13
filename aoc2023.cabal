@@ -30,6 +30,8 @@ library
       Day3
       Day4
       Day5
+      Day6
+      Day_5
       Lib
   hs-source-dirs:
       src
@@ -37,6 +39,7 @@ library
       base >=4.7 && <5
     , containers
     , parsec
+    , regex-tdfa
     , split
   default-language: Haskell2010
 
@@ -61,6 +64,8 @@ test-suite aoc2023-test
       Day3Spec
       Day4Spec
       Day5Spec
+      Day6Spec
+      Day_5Spec
       LibSpec
       Paths_aoc2023
   hs-source-dirs:

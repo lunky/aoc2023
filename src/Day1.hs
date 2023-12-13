@@ -53,45 +53,54 @@ parseNum = do
     ANum d -> return d
     AChar _ -> parseNum
 
+
+forwardOrBackward :: String -> Parser String
+forwardOrBackward numString = Parsec.string numString <|> Parsec.string (reverse numString)
+
 parseOne :: Parser Int
 parseOne = do
-  num <- Parsec.string "one" <|> Parsec.string "eno"
+  _ <- forwardOrBackward "one"
   return 1
 
 parseTwo :: Parser Int
 parseTwo = do
-  num <- Parsec.string "two" <|> Parsec.string "owt"
+  _ <- forwardOrBackward "two"
   return 2
+
 parseThree :: Parser Int
 parseThree = do
-  num <- Parsec.string "three" <|> Parsec.string "eerht"
+  _ <- forwardOrBackward "three"
   return 3
+
 parseFour :: Parser Int
 parseFour = do
-  num <- Parsec.string "four" <|> Parsec.string "ruof"
+  _ <- forwardOrBackward "four"
   return 4
+
 parseFive :: Parser Int
 parseFive = do
-  num <- Parsec.string "five" <|> Parsec.string "evif"
+  _ <- forwardOrBackward "five"
   return 5
+
 parseSix :: Parser Int
 parseSix = do
-  num <- Parsec.string "six" <|> Parsec.string "xis"
+  _ <- forwardOrBackward "six"
   return 6
+
 parseSeven :: Parser Int
 parseSeven = do
-  num <- Parsec.string "seven" <|> Parsec.string "neves"
+  _ <- forwardOrBackward "seven"
   return 7
+
 parseEight :: Parser Int
 parseEight = do
-  num <- Parsec.string "eight" <|> Parsec.string "thgie"
+  _ <- forwardOrBackward "eight"
   return 8
+
 parseNine :: Parser Int
 parseNine = do
-  num <- Parsec.string "nine" <|> Parsec.string "enin"
+  _ <- forwardOrBackward "nine"
   return 9
-
-
 
 _input = "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet"
 _inputb = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen"

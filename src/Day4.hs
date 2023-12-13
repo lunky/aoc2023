@@ -18,7 +18,7 @@ day4b input = sum $ map snd $ Map.toList $ day4b' input
     day4b' input = foldl' award initialized boardState
       where boardState = parseInput input
             initialized = Map.fromList $ map (\y-> (fst y,1)) boardState
-            award acc (game,wins) = foldr (\y m -> 
+            award acc (game,wins) = foldr (\y m ->  -- add cards for the next `wins` number of games
                                      Map.insertWith (+) y (m Map.! game) m ) 
                                      acc [(game+1)..(game+wins)]
 
@@ -26,8 +26,10 @@ score :: Int -> Int
 score 0 = 0
 score n = 2 ^ (n-1)
 
+parseInput :: String -> [(Int, Int)]
 parseInput input = map parseCard $ lines input
 
+parseCard :: [Char] -> (Int, Int)
 parseCard input = (card, matches (winners,drawn))
   where card = (\y->read y::Int) $ takeWhile (/=':') $ drop 5 input
         winners = words $ takeWhile (/='|') $ drop 2 $ dropWhile (/=':') input
