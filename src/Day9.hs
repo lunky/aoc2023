@@ -19,13 +19,13 @@ day9' inSet = sum $ go inSet [last inSet]
 
 day9b :: String -> Int
 day9b input = sum $ map day9b' $ parseInput  input
-
-day9b' inSet = foldl1 (\acc z-> z-acc) $ go inSet [head inSet]
- where
-  go (x:xs) acc
-   | all (==0) (x:xs) = acc
-   | otherwise = go next (head next:acc)
-    where next = zipWith (flip (-)) (x:xs) xs
+ where 
+  day9b' inSet = foldl1 (flip (-)) $ go inSet [head inSet]
+   where
+    go (x:xs) acc
+     | all (==0) (x:xs) = acc
+     | otherwise = go next (head next:acc)
+      where next = zipWith (flip (-)) (x:xs) xs
 
 parseInput :: String -> [[Int]]
 parseInput input = map (map read.words) $ lines input
