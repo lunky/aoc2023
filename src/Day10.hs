@@ -4,15 +4,13 @@ module Day10
    ,day10b
    ,_input
    ,_input2
+   ,_input5
     )
     where
 import Data.Maybe
 import qualified Data.Map as Map
-import qualified Data.Set as Set
 import Data.Map (Map)
-import Data.Set (Set)
 import Data.List.Split
-import Data.Bifunctor
 
 translate pipe = case pipe of
   '|' -> Just NorthSouth
@@ -71,13 +69,11 @@ day10b' input = filter (\y-> inside' y path e) (empty path)
         path = replaceStart $ Map.fromList $ followPath' parsed
 
 empty m = map fst $ filter snd $ [((x,y),Map.notMember (x,y) m) | y <- [1..maxY], x <- [1..maxX]]
-  where [minX, minY, maxX, maxY] = extents $ map fst $ Map.toList m
+  where [_, _, maxX, maxY] = extents $ map fst $ Map.toList m
 
 
-inside' (x,y) m [minX, minY, maxX, maxY] =  odd $ score north North
-  where
-    s = Set.fromList $ Map.keys m
-    north = [(\ k -> (k, Map.findWithDefault Nothing k m)) (x, b) | b <- [minY .. y]]
+inside' (x,y) m [_, minY, _, _] =  odd $ score north North
+  where north = [(\ k -> (k, Map.findWithDefault Nothing k m)) (x, b) | b <- [minY .. y]]
 
 score :: [((Int,Int), Maybe Pipe)] -> Direction -> Int
 score xs North = straightPieces + matchingPieces
@@ -104,7 +100,7 @@ identifyStart p m
 
   | n `elem` [Just NorthSouth, Just SouthWest, Just SouthEast] && e `elem` [Just EastWest, Just SouthWest, Just NorthWest] = NorthEast
   | s `elem` [Just NorthSouth, Just NorthWest, Just NorthEast] && e `elem` [Just EastWest, Just SouthWest, Just NorthWest] = SouthEast
-	where  [n,s,e,w] = map (\f-> fromMaybe Nothing $ Map.lookup (f p) m) [north, south, east, west]
+  where  [n,s,e,w] = map (\f-> fromMaybe Nothing $ Map.lookup (f p) m) [north, south, east, west]
 
 startDirection :: (Int, Int) -> Map (Int, Int) (Maybe Pipe) -> Direction
 startDirection p m
@@ -151,16 +147,11 @@ parseInput input = Map.fromList
                     $ zip [1..]
                     $ lines input
 
-parseInput2 input = Map.fromList [ ((x,y),'.') | x <- [1..width], y <- [1..height] ]
-  where grid = lines input
-        width = length $ head grid
-        height = length grid
-
-showGrid m = mapM_ putStrLn
+_showGrid m = mapM_ putStrLn
               $ chunksOf maxX
               $ [xtranslate
               $ Map.findWithDefault Nothing (x,y) m | y <- [1..maxY], x <- [1..maxX]]
-  where [minX, minY, maxX, maxY] = extents $ map fst $ Map.toList m
+  where [_, _, maxX, maxY] = extents $ map fst $ Map.toList m
 
 
 
