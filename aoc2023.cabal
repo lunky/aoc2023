@@ -28,6 +28,7 @@ library
       Day1
       Day10
       Day11
+      Day12
       Day2
       Day3
       Day4
@@ -43,6 +44,7 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
+    , mtl
     , parsec
     , regex-tdfa
     , split
@@ -66,6 +68,7 @@ test-suite aoc2023-test
   other-modules:
       Day10Spec
       Day11Spec
+      Day12Spec
       Day1Spec
       Day2Spec
       Day3Spec
