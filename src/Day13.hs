@@ -10,48 +10,36 @@ import Data.List
 import Data.List.Split
 
 day13 :: String -> Int
-day13 input = sum $ mapMaybe rankPattern $ parseInput input
+day13 input = sum $ map (summarize .  rankPattern') 
+                  $ parseInput input
 
 day13b :: String -> Int
-day13b input = sum $ map findAndApplySmudge $ parseInput input
+day13b input = sum $ map (summarize.findAndApplySmudge) 
+                   $ parseInput input
 
-findAndApplySmudge  pat = head $
-        map (\((h,v),_)-> fromMaybe (fromJust v * 100) h)
-        $ filter (\(z,_) -> z /= (Nothing,Nothing))
-        $ map ((\(z,y) -> if z /= current then (z,y) else ((Nothing,Nothing),y)) . (\y-> (rankPattern'' current $ swapAtIndex y pat,y))) [0.. length (concat pat) -1]
-        where current = rankPattern' pat
+summarize :: Num a => (Maybe a,Maybe a) -> a
+summarize (h,v) = fromMaybe (fromJust v * 100) h
 
-rankPattern' pat =  (vertical,horizontal)
-        where (vertical,horizontal) = (commonSplit pat, commonSplit $ transpose pat)
-              commonSplit s =  let split = (\(x:xs)-> filter (\y-> all (elem y) xs ) x ) $ map findSplits s
-                               in case split of
-                                  [] -> Nothing
-                                  (y:_) -> Just y
+findAndApplySmudge :: [String] -> (Maybe Int,Maybe Int)
+findAndApplySmudge  pat = head $ filter (\z -> z /= (Nothing,Nothing))
+        $ map ((\(z,y) -> if z /= current then z else (Nothing,Nothing)) . (\y-> (rankPattern current $ swapAtIndex y pat,y))) [0.. length (concat pat) -1]
+       where current = rankPattern' pat
 
-rankPattern'' (ignoreVertical,ignoreHorizontal) pat =  (vertical,horizontal)
+rankPattern' :: Eq a => [[a]] -> (Maybe Int,Maybe Int)
+rankPattern' = rankPattern (Nothing,Nothing)
+
+rankPattern :: Eq a => (Maybe Int,Maybe Int) -> [[a]] -> (Maybe Int,Maybe Int)
+rankPattern (ignoreVertical,ignoreHorizontal) pat =  (vertical,horizontal)
         where (vertical,horizontal) = (commonSplit ignoreVertical pat, commonSplit ignoreHorizontal $ transpose pat)
               commonSplit i s =  let split = (\(x:xs)-> filter (\y-> Just y/=i &&  all (elem y) xs ) x ) $ map findSplits s
                                in case split of
                                   [] -> Nothing
-                                  [y] -> Just y
-                                  _  -> error "shouldn't be multiple splits"
+                                  (y:_) -> Just y
 
+findSplits :: Eq a => [a] -> [Int]
 findSplits z = filter (\y-> uncurry (==) $ evenSplit $ splitAt y z) [1..length z-1]
   where evenSplit (a,b) = let minLength = min (length a) (length b)
                           in (take minLength $ reverse a, take minLength b)
-
-rankPattern :: Eq a => [[a]] -> Maybe Int
-rankPattern pat =   case commonSplit' vertical of
-                      Nothing -> case commonSplit' horizontal of
-                                 Just z -> Just $ 100 * z
-                                 Nothing -> Nothing
-                      Just x -> Just x
-  where (vertical,horizontal) = (pat, transpose pat)
-        commonSplit' s = let split = (\(x:xs)-> filter (\y-> all (elem y) xs ) x ) $ map findSplits s
-                         in case split of
-                            [] -> Nothing
-                            [y] -> Just y
-                            _  -> error "shouldn't be multiple splits"
 
 swapAtIndex :: Int -> [String] -> [String]
 swapAtIndex n ls = chunksOf chunk $ a ++ ((if s =='.' then '#' else '.'):b)
