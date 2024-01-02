@@ -31,7 +31,7 @@ library:
     - split
     - parsec
     - containers
-    - vector
+    - parallel
     - regex-tdfa
     - mtl
 
